@@ -3,7 +3,7 @@
 [![NuGet](https://img.shields.io/nuget/v/SharpJuice.AutoFixture.svg)](https://www.nuget.org/packages/SharpJuice.AutoFixture/)
 
 
-[AutoFixture]((https://github.com/AutoFixture/AutoFixture)) extension for partially specifying constructor parameters. 
+[AutoFixture](https://github.com/AutoFixture/AutoFixture) extension for partially specifying constructor parameters. 
 
 ### Samples ###
 
