@@ -1,2 +1,1 @@
-# SharpJuice.AutoFixture
-AutoFixture constructor injections  
+# SharpJuice

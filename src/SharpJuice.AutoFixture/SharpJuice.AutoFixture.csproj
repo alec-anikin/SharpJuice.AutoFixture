@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Overriding constructor parameters for AutoFixture</Description>
+    <Authors>Alec Anikin</Authors>
+    <Product>SharpJuice</Product>
+    <PackageVersion>1.0.2</PackageVersion>
+    <PackageProjectUrl>https://github.com/alec-anikin/SharpJuice/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/alec-anikin/SharpJuice/</RepositoryUrl>
+    <PackageTags>autofixture;extensions;sharpjuice</PackageTags>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.4.0" />
+  </ItemGroup>
+
+</Project>
