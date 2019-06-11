@@ -19,8 +19,12 @@ public class Order
 }
 ```
 
+Creating single instance with best fit constructor (modest constructor with all matched arguments)
+```csharp
+fixture.Create<Order>(new { id = 100500, createdAt = DateTimeOffset.Now  });
+``` 
 
-Modest constructor configuration
+Best fit constructor configuration
 ```csharp
 fixture.CustomizeConstructor<Order>(new { id = 100500, createdBy = "someuser" });
 ```

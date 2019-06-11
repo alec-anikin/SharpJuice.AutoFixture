@@ -32,7 +32,7 @@ namespace SharpJuice.AutoFixture
                 new MethodInvoker(new PartiallySpecifiedMethodQuery(new ModestConstructorQuery(), methodParameters)));
         }
 
-        public static void CustomizeConstructor<T>(this IFixture fixture, object parameters)
+        public static void CustomizeModestConstructor<T>(this IFixture fixture, object parameters)
         {
             fixture.Customize<T>(c => c.FromFactory(parameters));
         }
@@ -40,6 +40,24 @@ namespace SharpJuice.AutoFixture
         public static void CustomizeGreedyConstructor<T>(this IFixture fixture, object parameters)
         {
             fixture.Customize<T>(c => c.FromFactory(new GreedyConstructorQuery(), parameters));
+        }
+
+        public static void CustomizeConstructor<T>(this IFixture fixture, object parameters)
+        {
+            var param = new Parameters(parameters);
+            fixture.Customize<T>(c => c.FromFactory(new BestFitConstructorQuery(param), param));
+        }
+
+        public static T Create<T>(this ISpecimenBuilder builder, object parameters)
+        {
+            var param = new Parameters(parameters);
+
+            var invoker = new MethodInvoker(
+                new PartiallySpecifiedMethodQuery(
+                    new BestFitConstructorQuery(param),
+                    parameters));
+
+            return (T) invoker.Create(typeof(T), new SpecimenContext(builder));
         }
     }
 }
