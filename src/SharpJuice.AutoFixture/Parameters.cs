@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using AutoFixture.Kernel;
@@ -13,6 +12,8 @@ namespace SharpJuice.AutoFixture
 
         public Parameters(object parameters)
         {
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+
             _parameters = ToDictionary(parameters);
         }
 

@@ -23,6 +23,8 @@ Creating single instance with best fit constructor (modest constructor with all 
 ```csharp
 fixture.Create<Order>(new { id = 100500, createdAt = DateTimeOffset.Now  });
 ``` 
+Anonymous type property must match (case-insensitive) with one of constructor parameters.
+
 
 Best fit constructor configuration
 ```csharp
@@ -34,4 +36,8 @@ Greedy constructor configuration
 fixture.CustomizeGreedyConstructor<Order>(new { discount = 10.0m, customerId = Guid.NewGuid() });
 ```
 
-Anonymous type property must match (case-insensitive) with one of constructor parameters.
+
+Freezing constructor parameter for a type. All instances of the type will get the same parameter instance. 
+```csharp
+fixture.FreezeParameter<Order, decimal>();
+``` 

@@ -59,5 +59,18 @@ namespace SharpJuice.AutoFixture
 
             return (T) invoker.Create(typeof(T), new SpecimenContext(builder));
         }
+
+        public static TParameter FreezeParameter<TType, TParameter>(this IFixture fixture)
+        {
+            var context = new SpecimenContext(fixture);
+            var specimen = context.Resolve(typeof(TParameter));
+
+            fixture.Customize(
+                new FreezeSpecimenOnMatchCustomization(
+                    specimen,
+                    new DeclaringTypeParameterSpecification(typeof(TType), typeof(TParameter))));
+
+            return (TParameter) specimen;
+        }
     }
 }
