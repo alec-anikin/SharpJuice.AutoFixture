@@ -6,7 +6,7 @@
     <Description>Overriding constructor parameters for AutoFixture</Description>
     <Authors>Alec Anikin</Authors>
     <Product>SharpJuice</Product>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>1.2.0</PackageVersion>
     <PackageProjectUrl>https://github.com/alec-anikin/SharpJuice.AutoFixture/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/alec-anikin/SharpJuice.AutoFixture</RepositoryUrl>
     <PackageTags>autofixture;extensions;sharpjuice</PackageTags>
