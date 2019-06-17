@@ -15,7 +15,7 @@ namespace SharpJuice.AutoFixture.Tests
 			var parameters = new {X = 100500, somestring = "Red Fox"};
 
 			fixture.Customize<Sut>(
-				c => c.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(new GreedyConstructorQuery(), parameters))));
+				c => c.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(new GreedyConstructorQuery(), new Parameters(parameters)))));
 			
 			var sut = fixture.Create<Sut>();
 
@@ -32,7 +32,7 @@ namespace SharpJuice.AutoFixture.Tests
 			var parameters = new { X = 100500, UnknownString = "Red Fox" };
 
 			fixture.Customize<Sut>(
-				c => c.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(new ModestConstructorQuery(), parameters))));
+				c => c.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(new ModestConstructorQuery(), new Parameters(parameters)))));
 
 			var sutAct = new Action(() => fixture.Create<Sut>());
 

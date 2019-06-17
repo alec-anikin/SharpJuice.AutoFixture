@@ -21,7 +21,7 @@ namespace SharpJuice.AutoFixture
             IMethodQuery query,
             object methodParameters)
         {
-            return composer.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(query, methodParameters)));
+            return composer.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(query, new Parameters(methodParameters))));
         }
 
         public static IPostprocessComposer<T> FromFactory<T>(
@@ -29,7 +29,7 @@ namespace SharpJuice.AutoFixture
             object methodParameters)
         {
             return composer.FromFactory(
-                new MethodInvoker(new PartiallySpecifiedMethodQuery(new ModestConstructorQuery(), methodParameters)));
+                new MethodInvoker(new PartiallySpecifiedMethodQuery(new ModestConstructorQuery(), new Parameters(methodParameters))));
         }
 
         public static void CustomizeModestConstructor<T>(this IFixture fixture, object parameters)
@@ -45,7 +45,10 @@ namespace SharpJuice.AutoFixture
         public static void CustomizeConstructor<T>(this IFixture fixture, object parameters)
         {
             var param = new Parameters(parameters);
-            fixture.Customize<T>(c => c.FromFactory(new BestFitConstructorQuery(param), param));
+            fixture.Customize<T>(c =>
+                c.FromFactory(
+                    new MethodInvoker(
+                        new PartiallySpecifiedMethodQuery(new BestFitConstructorQuery(param), param))));
         }
 
         public static T Create<T>(this ISpecimenBuilder builder, object parameters)
@@ -53,9 +56,7 @@ namespace SharpJuice.AutoFixture
             var param = new Parameters(parameters);
 
             var invoker = new MethodInvoker(
-                new PartiallySpecifiedMethodQuery(
-                    new BestFitConstructorQuery(param),
-                    parameters));
+                new PartiallySpecifiedMethodQuery(new BestFitConstructorQuery(param), param));
 
             return (T) invoker.Create(typeof(T), new SpecimenContext(builder));
         }

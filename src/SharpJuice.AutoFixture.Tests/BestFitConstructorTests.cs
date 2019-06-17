@@ -125,5 +125,17 @@ namespace SharpJuice.AutoFixture.Tests
             act.Should().Throw<InvalidOperationException>();
         }
 
+
+        [Fact]
+        public void CreatingInstanceWithCustomizedConstructor_ReturnsSpecified()
+        {
+            var price = new Money(2589.54m, "USD");
+            _fixture.CustomizeConstructor<RedSquare>(new { price });
+
+            var instance = _fixture.Create<RedSquare>();
+
+            instance.Price.Amount.Should().Be(price.Amount);
+            instance.Price.Currency.Should().Be(price.Currency);
+        }
     }
 }

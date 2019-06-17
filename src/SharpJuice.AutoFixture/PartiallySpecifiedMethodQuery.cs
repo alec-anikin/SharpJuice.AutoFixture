@@ -11,11 +11,6 @@ namespace SharpJuice.AutoFixture
         private readonly IMethodQuery _baseQuery;
         private readonly Parameters _parameters;
 
-        public PartiallySpecifiedMethodQuery(IMethodQuery baseQuery, object parameters)
-            : this(baseQuery, new Parameters(parameters))
-        {
-        }
-
         public PartiallySpecifiedMethodQuery(IMethodQuery baseQuery, Parameters parameters)
         {
             _baseQuery = baseQuery;
