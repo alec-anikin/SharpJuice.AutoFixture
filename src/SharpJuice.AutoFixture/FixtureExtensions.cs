@@ -73,5 +73,10 @@ namespace SharpJuice.AutoFixture
 
             return (TParameter) specimen;
         }
+
+        public static void Register<TAbstract, TConcrete>(this Fixture fixture) where TConcrete : TAbstract
+        {
+            fixture.Register<TAbstract>(() => fixture.Create<TConcrete>());
+        }
     }
 }
