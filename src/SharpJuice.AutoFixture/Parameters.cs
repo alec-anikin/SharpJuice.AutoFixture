@@ -8,7 +8,7 @@ namespace SharpJuice.AutoFixture
 {
     public sealed class Parameters
     {
-        private readonly IDictionary<string, object> _parameters;
+        private readonly IDictionary<string, (object value, Type type)> _parameters;
 
         public Parameters(object parameters)
         {
@@ -20,7 +20,7 @@ namespace SharpJuice.AutoFixture
         public object GetParameterValue(ParameterInfo info, object defaultValue)
         {
             return _parameters.TryGetValue(info.Name, out var specifiedValue)
-                ? specifiedValue
+                ? specifiedValue.value
                 : defaultValue;
         }
 
@@ -49,19 +49,11 @@ namespace SharpJuice.AutoFixture
 
             foreach (var (methodParameter, parameter) in matchedByNameParameters)
             {
-                if (parameter.Value == null)
-                {
-                    if (methodParameter.ParameterType.IsValueType)
-                        throw new InvalidOperationException($"Parameter {methodParameter.Name} can't be null.");
+                var (value, type) = parameter.Value;
+                var methodParameterType = methodParameter.ParameterType;
 
-                    ++matchedScore;
-                    continue;
-                }
-
-                var parameterType = parameter.Value.GetType();
-
-                if (methodParameter.ParameterType == parameterType ||
-                    methodParameter.ParameterType.IsAssignableFrom(parameterType))
+                if (methodParameterType == type ||
+                    methodParameterType.IsAssignableFrom(type))
                 {
                     ++matchedScore;
                     continue;
@@ -69,7 +61,7 @@ namespace SharpJuice.AutoFixture
 
                 try
                 {
-                    Convert.ChangeType(parameter.Value, methodParameter.ParameterType);
+                    Convert.ChangeType(value, methodParameter.ParameterType);
 
                     if (methodParameter.ParameterType != typeof(string))
                         matchedScore += 0.01m;
@@ -83,13 +75,13 @@ namespace SharpJuice.AutoFixture
             return matchedScore;
         }
 
-        private static Dictionary<string, object> ToDictionary(object specifiedParameters)
+        private static Dictionary<string, (object, Type)> ToDictionary(object specifiedParameters)
         {
             return specifiedParameters.GetType()
                 .GetProperties()
                 .ToDictionary(
                     p => p.Name,
-                    p => p.GetValue(specifiedParameters),
+                    p => (p.GetValue(specifiedParameters), p.PropertyType),
                     StringComparer.OrdinalIgnoreCase);
         }
     }

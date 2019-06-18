@@ -137,5 +137,19 @@ namespace SharpJuice.AutoFixture.Tests
             instance.Price.Amount.Should().Be(price.Amount);
             instance.Price.Currency.Should().Be(price.Currency);
         }
+
+        [Fact]
+        public void CreatingInstanceWithNullable_ReturnsSpecified()
+        {
+            var param = new {x = 12.5m, y = default(Money?)};
+
+            _fixture.CustomizeConstructor<WithNullableParam>(param);
+
+            var instance = _fixture.Create<WithNullableParam>();
+
+            instance.X.Should().Be(param.x);
+            instance.Y.Should().BeNull();
+            instance.Z.Should().HaveValue();
+        }
     }
 }
