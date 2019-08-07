@@ -40,7 +40,7 @@ namespace SharpJuice.AutoFixture.Tests
         [Fact]
         public void CreatingSingleCtorClassWithNonConvertibleParameters_Throws()
         {
-            var param = new {y = 134m, Price = new Money(100, "USD")};
+            var param = new {y = 134.5m, Price = new Money(100, "USD")};
             
             Action act = () => _fixture.Create<RedSquare>(param);
             act.Should().Throw<ArgumentException>();
@@ -150,6 +150,54 @@ namespace SharpJuice.AutoFixture.Tests
             instance.X.Should().Be(param.x);
             instance.Y.Should().BeNull();
             instance.Z.Should().HaveValue();
+        }
+
+        [Fact]
+        public void CreatingInstanceWithIntToDecimalImplicitCast_DecimalPassed()
+        {
+            var instance = _fixture.Create<Money>(new {amount = 10});
+
+            instance.Amount.Should().Be(10m);
+        }
+
+        [Fact]
+        public void CreatingInstanceWithIntToDoubleImplicitCast_DoublePassed()
+        {
+            var instance = _fixture.Create<MyDouble>(new { r = 10 });
+
+            instance.R.Should().Be(10.0);
+        }
+
+        [Fact]
+        public void CreatingInstanceWithIntToNullableDoubleImplicitCast_NullableDoublePassed()
+        {
+            var instance = _fixture.Create<WithNullableParam>(new { dbl = 10 });
+
+            instance.Dbl.Should().Be(10.0);
+        }
+
+        [Fact]
+        public void CreatingInstanceWithDecimalToDoubleImplicitCast_NullableDoublePassed()
+        {
+            var instance = _fixture.Create<WithNullableParam>(new { dbl = 10m });
+
+            instance.Dbl.Should().Be(10.0);
+        }
+
+        [Fact]
+        public void CreatingInstanceWithIntToNullableDecimalImplicitCast_NullableDoublePassed()
+        {
+            var instance = _fixture.Create<WithNullableParam>(new { x = 10 });
+
+            instance.X.Should().Be(10m);
+        }
+
+        [Fact]
+        public void CreatingInstanceWithDoubleToNullableDecimalImplicitCast_NullableDoublePassed()
+        {
+            var instance = _fixture.Create<WithNullableParam>(new { x = 10.1 });
+
+            instance.X.Should().Be(10.1m);
         }
     }
 }

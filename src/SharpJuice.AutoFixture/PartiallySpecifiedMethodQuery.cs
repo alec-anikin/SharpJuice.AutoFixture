@@ -42,7 +42,11 @@ namespace SharpJuice.AutoFixture
 
             public object Invoke(IEnumerable<object> parameters)
             {
-                return _method.Invoke(Parameters.Zip(parameters, _specifiedParameters.GetParameterValue));
+                return _method.Invoke(Parameters.Zip(
+                    parameters,
+                    (param, value) => NumericConverter.Convert(
+                        _specifiedParameters.GetParameterValue(param, value),
+                        param.ParameterType)));
             }
         }
     }

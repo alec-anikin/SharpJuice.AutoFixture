@@ -59,12 +59,18 @@ namespace SharpJuice.AutoFixture
                     continue;
                 }
 
+                if (NumericConverter.CanConvert(value, methodParameterType))
+                {
+                    matchedScore += 0.01m;
+                    continue;
+                }
+
                 try
                 {
-                    Convert.ChangeType(value, methodParameter.ParameterType);
+                    Convert.ChangeType(value, methodParameterType);
 
-                    if (methodParameter.ParameterType != typeof(string))
-                        matchedScore += 0.01m;
+                    if (methodParameterType != typeof(string))
+                        matchedScore += 0.001m;
                 }
                 catch
                 {
