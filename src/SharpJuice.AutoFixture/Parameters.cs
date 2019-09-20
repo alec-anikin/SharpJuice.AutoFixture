@@ -17,11 +17,14 @@ namespace SharpJuice.AutoFixture
             _parameters = ToDictionary(parameters);
         }
 
-        public object GetParameterValue(ParameterInfo info, object defaultValue)
+        public bool Contains(ParameterInfo parameter) =>
+            _parameters.ContainsKey(parameter.Name);
+
+        public object GetParameterValue(ParameterInfo info)
         {
             return _parameters.TryGetValue(info.Name, out var specifiedValue)
                 ? specifiedValue.value
-                : defaultValue;
+                : throw new InvalidOperationException("Parameter not found");
         }
 
         public string[] GetUnknownParameters(IMethod method)

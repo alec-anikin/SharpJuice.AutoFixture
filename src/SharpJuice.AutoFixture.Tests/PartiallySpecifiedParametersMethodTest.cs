@@ -25,7 +25,24 @@ namespace SharpJuice.AutoFixture.Tests
 			sut.Z.Should().NotBe(parameters.somestring);
 		}
 
-		[Fact]
+        [Fact]
+        public void SpecifyingParameters2_ParametersWithSameNamesInjected()
+        {
+            var fixture = new Fixture();
+            var parameters = new { y = 100500, z = "Red Fox" };
+
+            fixture.Customize<Sut>(
+                c => c.FromFactory(new MethodInvoker(new PartiallySpecifiedMethodQuery(new GreedyConstructorQuery(), new Parameters(parameters)))));
+
+            var sut = fixture.Create<Sut>();
+
+            sut.SomeString.Should().NotBe(parameters.z);
+            sut.X.Should().NotBe(parameters.y);
+            sut.Y.Should().Be(parameters.y);
+            sut.Z.Should().Be(parameters.z);
+        }
+
+        [Fact]
 		public void SpecifyingWrongParameters_ExceptionThrows()
 		{
 			var fixture = new Fixture();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoFixture;
 using FluentAssertions;
 using SharpJuice.AutoFixture.Tests.TestObjects;
@@ -198,6 +199,26 @@ namespace SharpJuice.AutoFixture.Tests
             var instance = _fixture.Create<WithNullableParam>(new { x = 10.1 });
 
             instance.X.Should().Be(10.1m);
+        }
+
+        [Fact]
+        public void CreatingInstanceWithIReadOnlyCollectionFromArray_Created()
+        {
+            var items = new int[] {6, 7, 8};
+            var instance = _fixture.Create<Collector>(new {items = items});
+
+            instance.Items.Should().BeEquivalentTo(items);
+
+        }
+
+        [Fact]
+        public void CreatingInstanceWithIReadOnlyCollectionOfInterfacesFromArray_Created()
+        {
+            IReadOnlyCollection<IItem> items = new IItem[] { new BookItem(), new StampItem() };
+            var instance = _fixture.Create<AdvancedCollector>(new { items = items });
+
+            instance.Items.Should().BeEquivalentTo(items);
+
         }
     }
 }
