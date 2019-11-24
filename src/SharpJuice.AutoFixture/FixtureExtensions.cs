@@ -1,8 +1,8 @@
-﻿using AutoFixture;
-using AutoFixture.Dsl;
+﻿using AutoFixture.Dsl;
 using AutoFixture.Kernel;
+using SharpJuice.AutoFixture;
 
-namespace SharpJuice.AutoFixture
+namespace AutoFixture
 {
     public static class FixtureExtensions
     {
